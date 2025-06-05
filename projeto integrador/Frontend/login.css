@@ -1,0 +1,148 @@
+:root {
+  --azul-escuro: #2c3e50;
+  --azul-claro: #3498db;
+  --cinza-claro: #f4f5f7;
+  --cinza-medio: #bdc3c7;
+  --branco: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--branco);
+}
+
+.container {
+  height: 130vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: #ecf0f1;
+  padding: 40px 60px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 10px;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.btn {
+  display: block;
+  margin: 20px auto 0 auto;
+  width: 50%;
+  background: var(--azul-escuro);
+  color: var(--branco);
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #1C2F4A;
+}
+
+.log {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-link {
+  color: #0056b3;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.ou {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.ou span {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.google-icone {
+  width: 40px;
+  cursor: pointer;
+}
+
+.versao {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #777;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-box {
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 140px;
+  }
+
+  .login-box {
+    padding: 20px 15px;
+  }
+
+  label, input, .btn, .signup-link, .versao {
+    font-size: 14px;
+  }
+
+  input {
+    padding: 8px;
+  }
+
+  .btn {
+    padding: 10px;
+    font-size: 15px;
+  }
+}
