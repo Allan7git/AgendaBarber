@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda Barber - Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <img src="../Frontend/imagens/logo preta.png" alt="Logo Agenda Barber" class="logo">
+
+      <!-- FORMULÁRIO DE LOGIN FUNCIONAL -->
+    <form action="/Frontend/backend/login.php" method="POST">
+
+
+        <label for="login">Login</label>
+        <input type="email" id="login" name="email" placeholder="Digite seu email" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <p class="log">Não tem uma conta? <a href="pages/cadastro.html" class="signup-link">Inscreva-se</a></p>
+
+      <div class="ou">
+        <span></span>
+        <p>ou</p>
+        <span></span>
+      </div>
+
+      <img src="../Frontend/imagens/icons8-google-logo-48.png" alt="Login com Google" class="google-icone">
+<script>
+  // Verifica se há uma mensagem de cadastro
+  const msg = localStorage.getItem("mensagemCadastro");
+  if (msg) {
+    alert(msg); // ou crie um popup mais bonito se quiser
+    localStorage.removeItem("mensagemCadastro"); // Limpa a mensagem após exibir
+  }
+</script>
+
+      <p class="versao">Versão 1.0 - Grupo AIWI</p>
+    </div>
+  </div>
+</body>
+</html>
