@@ -14,18 +14,34 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--branco);
+  position: relative;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../Frontend/imagens/textura.JPG');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
 }
 
 .container {
-  height: 130vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .login-box {
-  background: #ecf0f1;
+  background: var(--cinza-claro);
   padding: 40px 60px;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -55,6 +71,33 @@ input {
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
+}
+
+/* Container do campo senha para o ícone */
+.campo-senha {
+  position: relative;
+  width: 100%;
+}
+
+.campo-senha input {
+  width: 100%;
+  padding-right: 50px; /* espaço maior para o olho */
+  box-sizing: border-box;
+}
+
+.toggle-senha {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: black !important;
+  font-size: 24px !important;
+  z-index: 10;
+}
+
+.toggle-senha:hover {
+  color: var(--azul-escuro);
 }
 
 .btn {

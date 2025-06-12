@@ -1,39 +1,43 @@
 <?php
 session_start();
+
+// Conecte ao banco de dados
 $conn = new mysqli("localhost", "root", "", "barbearia");
+
+
+if ($conn->connect_error) {
+  die("Conexão falhou: " . $conn->connect_error);
+}
 
 $email = $_POST['email'];
 $senha = $_POST['senha'];
 
-$sql = "SELECT * FROM usuarios WHERE email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
+// Consulta SQL para verificar o login
+$sql = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
+$result = $conn->query($sql);
 
-if ($result->num_rows === 1) {
-    $usuario = $result->fetch_assoc();
+if ($result->num_rows > 0) {
+  $usuario = $result->fetch_assoc();
 
-    // Se estiver usando password_hash() no cadastro, use password_verify aqui
-    if ($senha === $usuario['senha']) {
-        $_SESSION['usuario'] = $usuario['nome'];
-        $_SESSION['tipo'] = $usuario['tipo'];
+  // Salva os dados na sessão
+  $_SESSION['usuario_id'] = $usuario['id'];
+  $_SESSION['tipo'] = $usuario['tipo'];
 
-      if ($usuario['tipo'] === 'barbeiro') {
-    header("Location: ../Frontend/pages/barbeiro.php");
-    exit();
-} else {
-    header("Location: ../Frontend/pages/agendamento.php");
-    exit();
+  // Verifica se é barbeiro
+  if ($usuario['tipo'] === 'barbeiro') {
+    header("Location: /projeto-integrador/Frontend/pages/barbeiro.php");
+  } else {
+    header("Location: /projeto-integrador/Frontend/pages/fazer_agendamento.php");
+  }
+
+  exit();
+}
+ else {
+  echo "<script>
+    alert('Login ou senha inválidos!');
+    window.location.href = '../login.html';
+  </script>";
 }
 
-    } else {
-        echo "Senha incorreta.";
-    }
-} else {
-    echo "Usuário não encontrado.";
-}
-
-$stmt->close();
 $conn->close();
 ?>

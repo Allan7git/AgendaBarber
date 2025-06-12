@@ -167,6 +167,13 @@ h1 {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.tabela-agendamentos td:nth-child(6) {
+  max-width: 200px;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
 .tabela-agendamentos thead {
   background: var(--azul-escuro);
   color: var(--branco);
@@ -182,6 +189,33 @@ h1 {
 
 .tabela-agendamentos tbody tr:hover {
   background: var(--cinza-claro);
+  
+}
+.btn-cancelar {
+  background-color: #e74c3c; /* vermelho forte */
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #c0392b; /* vermelho mais escuro ao passar mouse */
+}
+.tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+}
+
+.tabela-agendamentos {
+  min-width: 600px;
+  margin: 0 auto;  /* centraliza a tabela quando couber */
 }
 
 @media (max-width: 768px) {

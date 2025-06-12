@@ -3,9 +3,24 @@ session_start();
 
 // Verifica se o usuário está logado e se é barbeiro
 if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'barbeiro') {
-    header("Location: ../login.php"); // Redireciona para o login
+    header("Location: ../login.php");
     exit;
 }
+
+// Conexão com o banco de dados
+$conn = new mysqli("localhost", "root", "", "barbearia");
+if ($conn->connect_error) {
+    die("Erro na conexão: " . $conn->connect_error);
+}
+
+// Consulta os agendamentos do dia com valor incluído
+$hoje = date('Y-m-d');
+$sql = "SELECT id, nome_cliente, servico, valor, data_agendamento, hora_agendamento, observacoes FROM agendamentos 
+        ORDER BY data_agendamento ASC";
+
+$result = $conn->query($sql);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -16,6 +31,23 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'barbeiro') {
   <link rel="stylesheet" href="barbeiro.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .btn-cancelar {
+      background-color: #e74c3c;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .btn-cancelar:hover {
+      background-color: #c0392b;
+    }
+    form {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -24,6 +56,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'barbeiro') {
     </div>
     <nav class="navbar">
       <ul class="menu-lista">
+         <li><a href="agendamento.html"><i class="fas fa-calendar-check"></i> Agendamento</a></li>
         <li><a href="../pages/sobrenós.html"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
         <li class="contato-wrapper">
           <a href="#" onclick="mostrarContato(event)"><i class="fas fa-phone-alt"></i> Contato</a>
@@ -41,66 +74,101 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'barbeiro') {
       </div>
     </nav>
   </header>
+<main class="content">
+  <h1>Área do Barbeiro</h1>
+  <p class="subtitle">Visualize os agendamentos do dia</p>
 
-  <main class="content">
-    <h1>Área do Barbeiro</h1>
-    <p class="subtitle">Visualize os agendamentos do dia</p>
+  <div class="alerta">
+    <i class="fas fa-info-circle"></i>
+    <span>Atualize a página para ver novos agendamentos.</span>
+  </div>
 
-    <div class="alerta">
-      <i class="fas fa-info-circle"></i>
-      <span>Atualize a página para ver novos agendamentos.</span>
-    </div>
-
+  <div class="tabela-wrapper">
     <table class="tabela-agendamentos">
       <thead>
         <tr>
           <th>Cliente</th>
           <th>Serviço</th>
+          <th>Valor</th>
           <th>Data</th>
           <th>Hora</th>
+          <th>Observacões</th>
+          <th>Ação</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>João Silva</td>
-          <td>Corte de Cabelo</td>
-          <td>05/06/2025</td>
-          <td>14:00</td>
-        </tr>
-        <tr>
-          <td>Maria Souza</td>
-          <td>Barba</td>
-          <td>05/06/2025</td>
-          <td>15:30</td>
-        </tr>
-        <tr>
-          <td>Carlos Pereira</td>
-          <td>Cabelo e Barba</td>
-          <td>05/06/2025</td>
-          <td>16:45</td>
-        </tr>
+        <?php
+        if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+            $dataFormatada = date('d/m/Y', strtotime($row['data_agendamento']));
+
+            switch ($row['servico']) {
+              case 'cabelo':
+                $servicoTexto = 'Corte de Cabelo';
+                break;
+              case 'barba':
+                $servicoTexto = 'Barba';
+                break;
+              case 'combo':
+                $servicoTexto = 'Corte + Barba';
+                break;
+              case 'degrade':
+                $servicoTexto = 'Corte Degradê';
+                break;
+              case 'corte_sobrancelha':
+                $servicoTexto = 'Corte + Sobrancelha';
+                break;
+              case 'corte_barba_sobrancelha':
+                $servicoTexto = 'Corte + Barba + Sobrancelha';
+                break;
+              default:
+                $servicoTexto = $row['servico'];
+            }
+
+            $valorFormatado = 'R$' . number_format($row['valor'], 2, ',', '.');
+
+            echo "<tr>
+              <td data-label='Cliente'>" . htmlspecialchars($row['nome_cliente']) . "</td>
+              <td data-label='Serviço'>" . htmlspecialchars($servicoTexto) . "</td>
+              <td data-label='Valor'>" . $valorFormatado . "</td>
+              <td data-label='Data'>" . $dataFormatada . "</td>
+              <td data-label='Hora'>" . htmlspecialchars($row['hora_agendamento']) . "</td>
+              <td data-label='Observações' class='observacao'>" . nl2br(htmlspecialchars($row['observacoes'])) . "</td>
+              <td data-label='Ação'>
+                <form method='POST' action='cancelar_agendamento.php' onsubmit='return confirm(\"Deseja realmente cancelar este agendamento?\");'>
+                  <input type='hidden' name='id_agendamento' value='" . $row['id'] . "' />
+                  <button type='submit' class='btn-cancelar'>Cancelar</button>
+                </form>
+              </td>
+            </tr>";
+          }
+        } else {
+          echo '<tr><td colspan="7" style="text-align:center;">Nenhum agendamento para hoje.</td></tr>';
+        }
+        ?>
       </tbody>
     </table>
-  </main>
+  </div>
+</main>
 
   <script>
     function toggleMenu() {
-      const menu = document.querySelector('.menu-lista');
-      menu.classList.toggle('ativo');
+      document.querySelector('.menu-lista').classList.toggle('ativo');
     }
 
     function mostrarContato(event) {
       event.preventDefault();
-      const box = document.getElementById('contato-info');
-      box.classList.toggle('mostrar');
+      document.getElementById('contato-info').classList.toggle('mostrar');
     }
 
     window.addEventListener('click', function (e) {
-      const contatoWrapper = document.querySelector('.contato-wrapper');
-      if (!contatoWrapper.contains(e.target)) {
+      if (!document.querySelector('.contato-wrapper').contains(e.target)) {
         document.getElementById('contato-info').classList.remove('mostrar');
       }
     });
   </script>
 </body>
 </html>
+<?php
+
+?>

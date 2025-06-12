@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Agenda Barber - Login</title>
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="login.css" />
 </head>
 <body>
   <div class="container">
     <div class="login-box">
-      <img src="../Frontend/imagens/logo preta.png" alt="Logo Agenda Barber" class="logo">
+      <img src="../Frontend/imagens/logo preta.png" alt="Logo Agenda Barber" class="logo" />
 
-      <!-- FORMULÁRIO DE LOGIN FUNCIONAL -->
-    <form action="/Frontend/backend/login.php" method="POST">
-
-
+      <form action="../Frontend/backend/login.php" method="POST">
         <label for="login">Login</label>
-        <input type="email" id="login" name="email" placeholder="Digite seu email" required>
+        <input type="email" id="login" name="email" placeholder="Digite seu email" required />
 
         <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+        <div class="campo-senha">
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+          <span id="toggleSenha" class="toggle-senha" title="Mostrar senha">👁️</span>
+        </div>
 
         <button type="submit" class="btn">Entrar</button>
       </form>
@@ -31,18 +31,35 @@
         <span></span>
       </div>
 
-      <img src="../Frontend/imagens/icons8-google-logo-48.png" alt="Login com Google" class="google-icone">
-<script>
-  // Verifica se há uma mensagem de cadastro
-  const msg = localStorage.getItem("mensagemCadastro");
-  if (msg) {
-    alert(msg); // ou crie um popup mais bonito se quiser
-    localStorage.removeItem("mensagemCadastro"); // Limpa a mensagem após exibir
-  }
-</script>
+      <img src="../Frontend/imagens/icons8-google-logo-48.png" alt="Login com Google" class="google-icone" />
 
       <p class="versao">Versão 1.0 - Grupo AIWI</p>
     </div>
   </div>
+
+  <script>
+    // Mostrar alerta de mensagem se houver no localStorage
+    const msg = localStorage.getItem("mensagemCadastro");
+    if (msg) {
+      alert(msg); // Pode trocar por um popup mais estilizado, se quiser
+      localStorage.removeItem("mensagemCadastro");
+    }
+
+    // Mostrar / Ocultar senha enquanto o ícone estiver pressionado
+    const senhaInput = document.getElementById('senha');
+    const toggleSenha = document.getElementById('toggleSenha');
+
+    toggleSenha.addEventListener('mousedown', () => {
+      senhaInput.type = 'text';
+    });
+
+    toggleSenha.addEventListener('mouseup', () => {
+      senhaInput.type = 'password';
+    });
+
+    toggleSenha.addEventListener('mouseleave', () => {
+      senhaInput.type = 'password';
+    });
+  </script>
 </body>
 </html>

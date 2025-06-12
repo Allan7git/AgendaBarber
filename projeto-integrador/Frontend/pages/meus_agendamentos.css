@@ -1,0 +1,252 @@
+:root {
+  --azul-escuro: #2c3e50;
+  --azul-claro: #3498db;
+  --cinza-claro: #f4f5f7;
+  --cinza-medio: #bdc3c7;
+  --branco: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--branco);
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(90deg, #2980b9,#2c3e50);
+  color: var(--branco);
+  padding: 15px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  margin-left: 20px;
+  width: 100px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.menu-lista {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.menu-lista li {
+  position: relative;
+}
+
+.menu-lista li a {
+  color: var(--branco);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-lista li a:hover {
+  color: var(--azul-claro);
+}
+
+.observacao {
+  max-width: 200px;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.contato-box {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--branco);
+  border-left: 4px solid var(--azul-claro);
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--azul-escuro);
+  width: 250px;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.contato-box.mostrar {
+  display: block;
+  opacity: 1;
+}
+
+.contato-box h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.contato-box p {
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* CENTRALIZAÇÃO DO CONTEÚDO */
+.content {
+  margin-top: 50px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente */
+  padding: 40px;
+  background: url('../images/barbershop-bg.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 0;
+}
+
+.content > * {
+  z-index: 1;
+  position: relative;
+}
+
+h1 {
+  font-size: 28px;
+  color: var(--azul-escuro);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.alerta {
+  background: #dfe6e9;
+  border-left: 3px solid var(--azul-claro);
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--azul-escuro);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 500px;
+}
+
+/* NOVO CONTAINER PARA TABELA COM ROLAGEM */
+.tabela-wrapper {
+  width: 100%;
+  max-width: 635px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: var(--branco);
+  /* Remove overflow por padrão para telas grandes */
+  overflow-x: visible;
+}
+/* Estilo da tabela de agendamentos */
+.tabela-agendamentos {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tabela-agendamentos thead {
+  background: var(--azul-escuro);
+  color: var(--branco);
+}
+
+.tabela-agendamentos th,
+.tabela-agendamentos td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--cinza-claro);
+}
+
+.tabela-agendamentos tbody tr:hover {
+  background: var(--cinza-claro);
+}
+
+.btn-cancelar {
+  background-color: #e74c3c; /* vermelho forte */
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #c0392b; /* vermelho mais escuro ao passar mouse */
+}
+
+@media (max-width: 768px) {
+  .menu-lista {
+    flex-direction: column;
+    background: var(--azul-claro);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    display: none;
+    padding: 10px;
+    border-radius: 0 0 0 8px;
+  }
+
+  .menu-lista li a:hover {
+    color: var(--azul-escuro);
+  }
+
+  .menu-lista.ativo {
+    display: flex;
+  }
+
+  .content {
+    margin-top: 25%;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
+@media (max-width: 768px) {
+  .tabela-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

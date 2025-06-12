@@ -12,61 +12,76 @@
       <img src="../imagens/logo preta.png" alt="Logo Agenda Barber" class="logo">
 
       <form id="formCadastro">
-        <div class="input-icon">
-          <i class="fa fa-user"></i>
-          <input type="text" id="nome" name="nome" placeholder="Nome do usuário" required>
-        </div>
-
-        <div class="input-icon">
-          <i class="fa fa-envelope"></i>
-          <input type="email" id="email" name="email" placeholder="Digite seu email" required>
-        </div>
-
-        <div class="input-icon">
-          <i class="fa fa-lock"></i>
-          <input type="password" id="senha" name="senha" placeholder="Digite uma senha" required>
-        </div>
-
-        <button type="submit" class="btn">Cadastrar</button>
-      </form>
-
-      <p class="versao">Versão 1.0 - Grupo AIWI</p>
-    </div>
+  <div class="input-icon">
+    <i class="fa fa-user"></i>
+    <input type="text" id="nome" name="nome" maxlength="50" placeholder="Nome do usuário" required>
   </div>
 
-  <script>
-    document.getElementById("formCadastro").addEventListener("submit", function(e) {
-      e.preventDefault();
+  <div class="input-icon">
+    <i class="fa fa-envelope"></i>
+    <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+  </div>
 
-      const nome = document.getElementById("nome").value;
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
+  <div class="input-icon">
+    <i class="fa fa-lock"></i>
+    <input type="password" id="senha" name="senha" placeholder="Digite uma senha" required>
+  </div>
 
-      const dados = new FormData();
-      dados.append("nome", nome);
-      dados.append("email", email);
-      dados.append("senha", senha);
+  <button type="submit" class="btn">Cadastrar</button>
+  <p class="versao">Versão 1.0 - Grupo AIWI</p>
+</form>
 
-      fetch("../backend/cadastrar.php", {
+<script>
+document.getElementById("formCadastro").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-        method: "POST",
-        body: dados
-      })
-      .then(response => response.text())
-      .then(data => {
-        if (data.includes("sucesso")) {
-          // Armazena a mensagem temporariamente
-          localStorage.setItem("mensagemCadastro", "Cadastro realizado com sucesso!");
-          // Redireciona para a tela de login
-          window.location.href = "../index.html";
-        } else {
-          alert("Erro ao cadastrar: " + data);
-        }
-      })
-      .catch(error => {
-        alert("Erro na requisição: " + error);
-      });
-    });
-  </script>
+  const nome = document.getElementById("nome").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value;
+
+  // Validação simples
+  if (nome.length === 0) {
+    alert("Por favor, preencha o nome.");
+    return;
+  }
+
+  // Validação de email simples (regex básica)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Por favor, insira um email válido.");
+    return;
+  }
+
+  // Senha no mínimo 8 caracteres, ao menos 1 letra e 1 número
+  const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!senhaRegex.test(senha)) {
+    alert("A senha deve ter no mínimo 8 caracteres, contendo ao menos uma letra e um número.");
+    return;
+  }
+
+  const dados = new FormData();
+  dados.append("nome", nome);
+  dados.append("email", email);
+  dados.append("senha", senha);
+
+  fetch("../backend/cadastrar.php", {
+    method: "POST",
+    body: dados
+  })
+  .then(response => response.text())
+  .then(data => {
+    if (data.includes("sucesso")) {
+      localStorage.setItem("mensagemCadastro", "Cadastro realizado com sucesso!");
+      window.location.href = "../index.html";
+    } else {
+      alert("Erro ao cadastrar: " + data);
+    }
+  })
+  .catch(error => {
+    alert("Erro na requisição: " + error);
+  });
+});
+</script>
+
 </body>
 </html>
