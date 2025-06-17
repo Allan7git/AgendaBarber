@@ -21,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servico = $_POST["servico"];
     $data = $_POST["data"];
     $hora = $_POST["hora"];
-   
     $observacao = $_POST["observacoes"];
 
     // Determina o valor com base no serviço
@@ -35,8 +34,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         default: $valor = 0.00;
     }
 
-    // Prepara e executa a query com usuario_id incluído
-    $stmt = $conn->prepare("INSERT INTO agendamentos (usuario_id, nome_cliente, servico, data_agendamento, hora_agendamento, valor ,observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    // 🔒 VERIFICA SE JÁ EXISTE AGENDAMENTO NA MESMA DATA E HORA
+    $verifica = $conn->prepare("SELECT id FROM agendamentos WHERE data_agendamento = ? AND hora_agendamento = ?");
+    $verifica->bind_param("ss", $data, $hora);
+    $verifica->execute();
+    $verifica->store_result();
+
+    if ($verifica->num_rows > 0) {
+        echo "<script>
+                alert('Já existe um agendamento para esta data e horário. Por favor, escolha outro.');
+                window.history.back();
+              </script>";
+        $verifica->close();
+        $conn->close();
+        exit;
+    }
+    $verifica->close();
+
+    // INSERE o agendamento
+    $stmt = $conn->prepare("INSERT INTO agendamentos (usuario_id, nome_cliente, servico, data_agendamento, hora_agendamento, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("issssds", $usuario_id, $nome, $servico, $data, $hora, $valor, $observacao);
 
     if ($stmt->execute()) {

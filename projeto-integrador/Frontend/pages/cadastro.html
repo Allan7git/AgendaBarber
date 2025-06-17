@@ -53,7 +53,8 @@ document.getElementById("formCadastro").addEventListener("submit", function(e) {
   }
 
   // Senha no mínimo 8 caracteres, ao menos 1 letra e 1 número
-  const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+ const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
   if (!senhaRegex.test(senha)) {
     alert("A senha deve ter no mínimo 8 caracteres, contendo ao menos uma letra e um número.");
     return;

@@ -75,7 +75,8 @@
 
       <div class="campo">
         <i class="fas fa-clock"></i>
-        <input type="time" name="hora" required />
+       <input type="time" name="hora" min="09:00" max="19:00" required />
+
       </div>
       
       <div class="descricao">
@@ -105,6 +106,23 @@
         document.getElementById('contato-info').classList.remove('mostrar');
       }
     });
+
+
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    const dataInput = document.querySelector('input[type="date"]');
+
+    dataInput.addEventListener("input", function () {
+      const dataSelecionada = new Date(this.value);
+      const diaSemana = dataSelecionada.getUTCDay(); // 0 = Domingo
+
+      if (diaSemana === 0) {
+        alert("Domingos não estão disponíveis para agendamento.");
+        this.value = ""; // Limpa a data inválida
+      }
+    });
+  });
+
   </script>
 </body>
 </html>

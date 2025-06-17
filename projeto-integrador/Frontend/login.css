@@ -92,7 +92,7 @@ input {
   transform: translateY(-50%);
   cursor: pointer;
   color: black !important;
-  font-size: 24px !important;
+  font-size: 15px !important;
   z-index: 10;
 }
 

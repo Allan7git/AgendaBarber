@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
  else {
   echo "<script>
     alert('Login ou senha inválidos!');
-    window.location.href = '../login.html';
+    window.location.href = '../index.html';
   </script>";
 }
 

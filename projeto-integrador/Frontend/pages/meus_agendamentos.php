@@ -35,7 +35,7 @@ $resultado = $stmt->get_result();
   </div>
   <nav class="navbar">
     <ul class="menu-lista">
-       <li><a href="agendamento.html"><i class="fas fa-calendar-check"></i> Agendamento</a></li>
+       <li><a href="fazer_agendamento.php"><i class="fas fa-calendar-check"></i> Agendamento</a></li>
       <li><a href="../pages/sobrenós.html"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
       <li class="contato-wrapper">
         <a href="#" onclick="mostrarContato(event)"><i class="fas fa-phone-alt"></i> Contato</a>

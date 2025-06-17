@@ -20,6 +20,14 @@ $sql = "SELECT id, nome_cliente, servico, valor, data_agendamento, hora_agendame
 
 $result = $conn->query($sql);
 
+// Calcula o faturamento total
+$total_faturado = 0;
+$sql_faturamento = "SELECT SUM(valor) AS total_faturado FROM agendamentos";
+$result_faturamento = $conn->query($sql_faturamento);
+if ($result_faturamento && $result_faturamento->num_rows > 0) {
+    $row = $result_faturamento->fetch_assoc();
+    $total_faturado = $row['total_faturado'] ?? 0;
+}
 
 ?>
 <!DOCTYPE html>
@@ -56,8 +64,8 @@ $result = $conn->query($sql);
     </div>
     <nav class="navbar">
       <ul class="menu-lista">
-         <li><a href="agendamento.html"><i class="fas fa-calendar-check"></i> Agendamento</a></li>
-        <li><a href="../pages/sobrenós.html"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
+        
+       
         <li class="contato-wrapper">
           <a href="#" onclick="mostrarContato(event)"><i class="fas fa-phone-alt"></i> Contato</a>
           <div id="contato-info" class="contato-box">
@@ -83,6 +91,10 @@ $result = $conn->query($sql);
     <span>Atualize a página para ver novos agendamentos.</span>
   </div>
 
+<div class="faturamento-box">
+  <i class="fas fa-money-bill-wave"></i>
+  Faturamento total: <strong>R$ <?php echo number_format($total_faturado, 2, ',', '.'); ?></strong>
+</div>
   <div class="tabela-wrapper">
     <table class="tabela-agendamentos">
       <thead>
@@ -96,6 +108,8 @@ $result = $conn->query($sql);
           <th>Ação</th>
         </tr>
       </thead>
+   
+
       <tbody>
         <?php
         if ($result->num_rows > 0) {
