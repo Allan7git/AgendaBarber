@@ -15,7 +15,7 @@ if (empty($nome) || empty($email) || empty($senha)) {
     die("Erro: Nome, email ou senha não enviados.");
 }
 
-// Validação básica no PHP
+// Validação básica
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     die("Erro: Email inválido.");
 }
@@ -34,13 +34,15 @@ $stmt_check->store_result();
 if ($stmt_check->num_rows > 0) {
     die("Erro: Email já cadastrado.");
 }
-
 $stmt_check->close();
 
-// INSERE a senha sem hash
+// Criptografa a senha
+$senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
+
+// Insere no banco
 $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $nome, $email, $senha);
+$stmt->bind_param("sss", $nome, $email, $senhaCriptografada);
 
 if ($stmt->execute()) {
     echo "sucesso";

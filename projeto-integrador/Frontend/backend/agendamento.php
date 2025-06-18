@@ -34,22 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         default: $valor = 0.00;
     }
 
-    // 🔒 VERIFICA SE JÁ EXISTE AGENDAMENTO NA MESMA DATA E HORA
-    $verifica = $conn->prepare("SELECT id FROM agendamentos WHERE data_agendamento = ? AND hora_agendamento = ?");
-    $verifica->bind_param("ss", $data, $hora);
-    $verifica->execute();
-    $verifica->store_result();
+    // 🔒 VERIFICA SE O USUÁRIO JÁ TEM UM AGENDAMENTO FUTURO E ATIVO
+    $verificaUsuario = $conn->prepare("SELECT id FROM agendamentos WHERE usuario_id = ? AND data_agendamento >= CURDATE() AND status = 'ativo'");
+    $verificaUsuario->bind_param("i", $usuario_id);
+    $verificaUsuario->execute();
+    $verificaUsuario->store_result();
 
-    if ($verifica->num_rows > 0) {
+    if ($verificaUsuario->num_rows > 0) {
         echo "<script>
-                alert('Já existe um agendamento para esta data e horário. Por favor, escolha outro.');
-                window.history.back();
+                alert('Você já possui um agendamento ativo. Cancele o agendamento atual antes de fazer outro.');
+                window.location.href = '../pages/meus_agendamentos.php';
               </script>";
-        $verifica->close();
+        $verificaUsuario->close();
         $conn->close();
         exit;
     }
-    $verifica->close();
+    $verificaUsuario->close();
 
     // INSERE o agendamento
     $stmt = $conn->prepare("INSERT INTO agendamentos (usuario_id, nome_cliente, servico, data_agendamento, hora_agendamento, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");

@@ -93,7 +93,7 @@ if ($result_faturamento && $result_faturamento->num_rows > 0) {
 
 <div class="faturamento-box">
   <i class="fas fa-money-bill-wave"></i>
-  Faturamento total: <strong>R$ <?php echo number_format($total_faturado, 2, ',', '.'); ?></strong>
+  Faturamento estimado: <strong>R$ <?php echo number_format($total_faturado, 2, ',', '.'); ?></strong>
 </div>
   <div class="tabela-wrapper">
     <table class="tabela-agendamentos">
